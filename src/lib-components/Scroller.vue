@@ -132,7 +132,11 @@ export default Vue.extend({
       let offset = 0;
       for (let i = 0; i < slides.length; i++) {
         const slide = slides[i];
-        const slideWidth = slide.getBoundingClientRect().width;
+        const slideStyle = window.getComputedStyle(slide);
+        const margin =
+          parseFloat(slideStyle.marginLeft) +
+          parseFloat(slideStyle.marginRight);
+        const slideWidth = slide.getBoundingClientRect().width + margin;
         offsets[i] = offset - frameBounds.x;
         offset += slideWidth;
       }

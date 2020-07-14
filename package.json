@@ -1,11 +1,17 @@
 {
 	"name": "@inniti/vue-horizontal-scroller",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Horizontal Vue scroller with native scrolling and snapping made by inniti",
 	"author": "inniti Software Engineering & Consulting",
 	"repository": "bitbucket:inniti-software/vue-horizontal-scroller",
 	"homepage": "https://vue-horizontal-scroller.inniti.de",
-	"keywords": ["vue", "scroll", "horizontal", "native scrolling", "css snap"],
+	"keywords": [
+		"vue",
+		"scroll",
+		"horizontal",
+		"native scrolling",
+		"css snap"
+	],
 	"main": "dist/nn-vue-horizontal-scroller.ssr.js",
 	"browser": "dist/nn-vue-horizontal-scroller.esm.js",
 	"module": "dist/nn-vue-horizontal-scroller.esm.js",

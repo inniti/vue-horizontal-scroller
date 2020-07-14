@@ -41,7 +41,7 @@
         },
         data() {
             return {
-                scrollDistance: 150,
+                scrollDistance: 166,
                 slides: [
                     { id: 1 },
                     { id: 2 },

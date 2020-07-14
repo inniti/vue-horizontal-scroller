@@ -1,6 +1,18 @@
 <template>
     <div>
-        <div class="buttons">
+        <div style="margin: 1rem;">
+            <label>
+                scrollDelay:
+                <input step="1" type="number" v-model.number="scrollDelay">
+            </label>
+        </div>
+        <div style="margin: 1rem;">
+            <label>
+                scrollDistance:
+                <input min="0" step="1" style="margin-right: 1rem;" type="number" v-model.number="scrollDistance">
+            </label>
+        </div>
+        <div style="margin: 1rem;">
             Slide to:&nbsp;
             <button @click="slideTo(0)">1</button>
             <button @click="slideTo(1)">2</button>
@@ -12,12 +24,16 @@
             <button @click="slideTo(7)">8</button>
             <button @click="slideTo(8)">9</button>
         </div>
-        <div class="arrows">
-            <input min="0" step="1" type="number" v-model.number="scrollDistance" style="margin-right: 1rem;">
+        <div style="margin: 1rem;">
             <button @click="slideBackwards">👈 scrollBackwards</button>
             <button @click="slideForwards">👉 scrollForwards</button>
         </div>
-        <NNHorizontalScroller :scroll-distance="scrollDistance" class="scroller" ref="scroller">
+        <NNHorizontalScroller :scroll-distance="scrollDistance"
+                              :scroll-delay="scrollDelay"
+                              @resize="logEvent('resize', $event)"
+                              @scroll="logEvent('scroll', $event)"
+                              class="scroller"
+                              ref="scroller">
             <NNHorizontalScrollerSlide
                 :key="slide.id"
                 class="slide"
@@ -26,6 +42,9 @@
                 {{ slide.id }}
             </NNHorizontalScrollerSlide>
         </NNHorizontalScroller>
+        <code style="display: block; height: 300px; font-size: 12px; overflow: auto; margin-top: 1rem;" ref="log">
+            <span :key="`log_${idx}`" style="display: block;" v-for="(line, idx) in log">{{ line }}</span>
+        </code>
     </div>
 </template>
 
@@ -34,13 +53,14 @@
     import NNHorizontalScrollerSlide from '../../../src/lib-components/ScrollerSlide.vue';
 
     export default {
-        name: 'ThreeSlides',
+        name: 'Controls',
         components: {
             NNHorizontalScroller,
             NNHorizontalScrollerSlide
         },
         data() {
             return {
+                scrollDelay: 60,
                 scrollDistance: 166,
                 slides: [
                     { id: 1 },
@@ -52,10 +72,18 @@
                     { id: 7 },
                     { id: 8 },
                     { id: 9 }
-                ]
+                ],
+                log: []
             };
         },
         methods: {
+            logEvent(eventName, event) {
+                this.log.push(`${eventName}: ${JSON.stringify(event)}`);
+                this.$nextTick(() => {
+                    const log = this.$refs.log;
+                    log.scrollTop = log.scrollHeight + 10;
+                })
+            },
             slideTo(idx) {
                 this.$refs.scroller.slideTo(idx);
             },
@@ -70,19 +98,6 @@
 </script>
 
 <style scoped>
-
-    .arrows {
-        margin-bottom: 2rem;
-        display: flex;
-        align-items: stretch;
-        flex-wrap: wrap;
-    }
-
-    .buttons {
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-    }
-
     .slide {
         width: 150px;
         height: 100px;

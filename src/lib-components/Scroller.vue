@@ -56,6 +56,8 @@ function debounce(fn: Function, delay: number) {
   };
 }
 
+const defaultScrollDelay = 60;
+
 export default Vue.extend({
   name: 'NNHorizontalScroller',
   components: {
@@ -70,6 +72,10 @@ export default Vue.extend({
     scrollDistance: {
       type: Number,
       default: NaN,
+    },
+    scrollDelay: {
+      type: Number,
+      default: defaultScrollDelay,
     },
   },
   data(): SampleData {
@@ -165,17 +171,20 @@ export default Vue.extend({
       this.scrollingTimeout && clearTimeout(this.scrollingTimeout);
       this.scrollingTimeout = null;
 
-      this.scrollingTimeout = setTimeout(() => {
-        this.calculateStartEnd();
-        this.scrolling = false;
-        let frame = this.$refs.frame as HTMLElement;
-        this.$emit('scroll', {
-          position: frame.scrollLeft,
-          atStart: this.atStart,
-          atEnd: this.atEnd,
-          width: frame.getBoundingClientRect().width,
-        });
-      }, 60);
+      this.scrollingTimeout = setTimeout(
+        () => {
+          this.calculateStartEnd();
+          this.scrolling = false;
+          let frame = this.$refs.frame as HTMLElement;
+          this.$emit('scroll', {
+            position: frame.scrollLeft,
+            atStart: this.atStart,
+            atEnd: this.atEnd,
+            width: frame.getBoundingClientRect().width,
+          });
+        },
+        isNaN(this.scrollDelay) ? defaultScrollDelay : this.scrollDelay
+      );
     },
 
     calculateStartEnd() {

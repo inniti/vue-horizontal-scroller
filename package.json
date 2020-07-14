@@ -1,6 +1,6 @@
 {
 	"name": "@inniti/vue-horizontal-scroller",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "Horizontal Vue scroller with native scrolling and snapping made by inniti",
 	"author": "inniti Software Engineering & Consulting",
 	"repository": "bitbucket:inniti-software/vue-horizontal-scroller",
